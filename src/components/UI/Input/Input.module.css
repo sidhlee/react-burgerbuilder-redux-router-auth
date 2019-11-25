@@ -1,0 +1,37 @@
+.Input {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.Label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 8px;
+}
+
+.InputElement {
+    border: 1px solid #ddd;
+    font-size: 1em;
+    width: 100%;
+    padding: 0.7em 0.7em 0.6em 0.7em;
+    margin: 0.1em;
+    border-radius: 5px;
+    box-sizing: border-box;
+    /* You need this in chrome to style select element */
+    appearance: none;
+}
+
+.InputElement:focus {
+    outline: none;
+    background-color: #fbfbf8;
+}
+
+@media (min-width: 600px) {
+    .InputElement {
+        width: 500px;
+    }
+}
+
+.Invalid {
+    border: 1px solid red;
+}

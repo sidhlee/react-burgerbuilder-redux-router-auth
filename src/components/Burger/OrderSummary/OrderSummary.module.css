@@ -1,0 +1,10 @@
+.OrderSummary {
+    text-align: center;
+}
+
+/* center ul */
+.OrderSummary ul {
+    display: table;
+    margin: 0 auto; 
+    transform: translateX(-1em);
+}
