@@ -1,6 +1,6 @@
 import * as actionTypes from "../actions/actionTypes";
 import { sumIngredientPrices } from "../../controllers/";
-import { updateObject } from "../utility";
+import { updateObject } from "../../shared/utility";
 
 const BASE_PRICE = 3;
 
@@ -14,7 +14,8 @@ const INGREDIENT_PRICES = {
 const initialState = {
   ingredients: null,
   totalPrice: BASE_PRICE,
-  error: false
+  error: false,
+  building: false
 };
 
 const addIngredient = (state, action) => {
@@ -30,7 +31,8 @@ const addIngredient = (state, action) => {
     ingredients: updatedIngredients,
     totalPrice:
       state.totalPrice +
-      INGREDIENT_PRICES[action.ingredientName]
+      INGREDIENT_PRICES[action.ingredientName],
+    building: true
   };
   return updateObject(state, newState);
 };
@@ -48,7 +50,8 @@ const removeIngredient = (state, action) => {
     ingredients: updatedIngredients,
     totalPrice:
       state.totalPrice +
-      INGREDIENT_PRICES[action.ingredientName]
+      INGREDIENT_PRICES[action.ingredientName],
+    building: true
   };
   return updateObject(state, newState);
 };
@@ -66,7 +69,8 @@ const setIngredients = (state, action) => {
       INGREDIENT_PRICES,
       BASE_PRICE
     ),
-    error: false // in case we had an error earlier
+    error: false, // in case we had an error earlier
+    building: true
   });
 };
 

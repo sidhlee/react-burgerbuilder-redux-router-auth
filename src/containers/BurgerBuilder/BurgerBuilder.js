@@ -20,14 +20,7 @@ class BurgerBuilder extends Component {
   };
 
   componentDidMount() {
-    console.log("[BurgerBuilder] componentDidMount");
-    console.log("[BurgerBuilder] props: ", this.props);
     this.props.initIngredients();
-  }
-
-  componentDidUpdate() {
-    console.log("[BurgerBuilder] componentDidUpdate");
-    console.log("[BurgerBuilder] props: ", this.props);
   }
 
   isPurchaseable() {
@@ -42,7 +35,12 @@ class BurgerBuilder extends Component {
   }
 
   purchaseHandler = () => {
-    this.setState({ purchasing: true });
+    if (this.props.isAuthenticated) {
+      this.setState({ purchasing: true });
+    } else {
+      this.props.setAuthRedirectPath("/checkout");
+      this.props.history.push("/auth");
+    }
   };
 
   purchaseCancelHandler = () => {
@@ -124,7 +122,9 @@ const mapDispatchToProps = dispatch => {
       dispatch(actions.removeIngredient(ingName)),
     initIngredients: () =>
       dispatch(actions.initIngredients()),
-    initPurchase: () => dispatch(actions.purchaseInit())
+    initPurchase: () => dispatch(actions.purchaseInit()),
+    setAuthRedirectPath: path =>
+      dispatch(actions.setAuthRedirectPath(path))
   };
 };
 

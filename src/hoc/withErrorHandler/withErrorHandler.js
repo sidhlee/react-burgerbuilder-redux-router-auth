@@ -9,7 +9,6 @@ import Aux from "../Aux/Aux";
 const withErrorHandler = (WrappedComponent, axios) => {
   return class extends Component {
     constructor(props) {
-      console.log("[withErrorHandler] constructor");
       super(props);
       this.state = {
         error: null
@@ -17,10 +16,6 @@ const withErrorHandler = (WrappedComponent, axios) => {
       this.reqInterceptor = axios.interceptors.request.use(
         req => {
           this.setState({ error: null }); // reset error before each new request
-          console.log(
-            `[withErrorHandler] axios.interceptors.request.use(req => :`,
-            req
-          );
           return req;
         }
       );
@@ -37,13 +32,6 @@ const withErrorHandler = (WrappedComponent, axios) => {
       ALL child component renderes. 
       We want to set interceptors before the child component 
       start rendering */
-    componentDidMount() {
-      console.log("[withErrorHanlder] componentDidMount");
-    }
-
-    componentDidUpdate() {
-      console.log("[withErrorHandler] componentDidUpdate");
-    }
 
     componentWillUnmount() {
       // console.log('will Unmount', this.reqInterceptor, this.resInterceptor);

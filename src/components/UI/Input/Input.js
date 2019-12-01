@@ -53,7 +53,7 @@ const input = props => {
               <option
                 value=""
                 key="placeholder"
-                selected="selected"
+                defaultValue
                 style={{ display: "none" }}
               >
                 {option.displayValue}

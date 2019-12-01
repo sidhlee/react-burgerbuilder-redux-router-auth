@@ -6,10 +6,6 @@ import { Route, Redirect } from "react-router-dom";
 import ContactData from "./ContactData/ContactData";
 
 class Checkout extends Component {
-  componentDidUpdate() {
-    console.log("[Checkout] componentDidUpdate");
-  }
-
   checkoutCancelledHandler = () => {
     this.props.history.goBack();
   };
@@ -19,8 +15,6 @@ class Checkout extends Component {
   };
 
   render() {
-    console.log("[Checkout] rendering...");
-
     let summary =
       this.props.ings && !this.props.purchased ? (
         <div>

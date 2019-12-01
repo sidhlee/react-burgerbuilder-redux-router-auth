@@ -12,7 +12,6 @@ export const removeIngredient = ingName => ({
 });
 
 const setIngredients = ingredients => {
-  console.log("[setIngredients]", ingredients);
   return {
     type: actionTypes.SET_INGREDIENTS,
     ingredients
@@ -32,11 +31,6 @@ export const initIngredients = () => {
         "https://react-my-burger-41a2a.firebaseio.com/ingredients.json"
       ) // make sure to include .json at the end!! (or you'll get a cors error)
       .then(res => {
-        console.log(
-          "[axios.get: ingredients.json] res: ",
-          res
-        );
-
         dispatch(setIngredients(res.data));
       })
       .catch(err => {

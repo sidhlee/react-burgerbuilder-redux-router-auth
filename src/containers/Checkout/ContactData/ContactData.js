@@ -1,6 +1,11 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 
+import {
+  updateObject,
+  checkValidity
+} from "../../../shared/utility";
+
 import Button from "../../../components/UI/Button/Button";
 import classes from "./ContactData.module.css";
 import axios from "../../../axios.orders";
@@ -102,16 +107,8 @@ class ContactData extends Component {
     formIsValid: false
   };
 
-  componentDidMount() {
-    console.log("[ContactData] componentDidMount ");
-  }
-
   orderHandler = e => {
     e.preventDefault();
-    console.log(
-      "[ContactData] orderHandler ",
-      this.props.ingredients
-    );
 
     const formData = {};
     for (var key in this.state.orderForm) {
@@ -121,62 +118,29 @@ class ContactData extends Component {
     const order = {
       ingredients: this.props.ings,
       price: this.props.price,
-      orderData: formData
+      orderData: formData,
+      userId: this.props.userId
     };
 
     this.props.onOrderBurger(order, this.props.token);
   };
 
-  checkValidity(value, rules) {
-    let isValid = true;
-    if (!rules) {
-      return true;
-    }
-
-    if (rules.required) {
-      isValid = value.trim() !== "" && isValid;
-    }
-
-    if (rules.minLength) {
-      isValid = value.length >= rules.minLength && isValid;
-    }
-
-    if (rules.maxLength) {
-      isValid = value.length <= rules.maxLength && isValid;
-    }
-
-    if (rules.isEmail) {
-      const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-      isValid = pattern.test(value) && isValid;
-    }
-
-    if (rules.isNumeric) {
-      const pattern = /^\d+$/;
-      isValid = pattern.test(value) && isValid;
-    }
-
-    return isValid;
-  }
-
   inputChangedHandler = (e, inputID) => {
-    const updatedOrderForm = {
-      ...this.state.orderForm // spread syntax copies props only 1 level deep.
-      // If prop value is a reference type (not primitive: array or another object), the referencing object itself is new object
-      // but they still reference to the same objects
-    };
-    const updatedFormElement = {
-      ...this.state.orderForm[inputID]
-    }; // We only need to use the value of 'value' prop nested under each orderForm Element.
-    // 'value' has a primitive type value(string)
-    // So we can effectively copy that with spread syntax
-    // But other nested props are still nesting the same objects
-    updatedFormElement.touched = true;
-    updatedFormElement.value = e.target.value;
-    updatedFormElement.valid = this.checkValidity(
-      updatedFormElement.value,
-      updatedFormElement.validation
+    const updatedFormElement = updateObject(
+      this.state.orderForm[inputID],
+      {
+        touched: true,
+        value: e.target.value,
+        valid: checkValidity(
+          e.target.value,
+          this.state.orderForm[inputID].validation
+        )
+      }
     );
-    updatedOrderForm[inputID] = updatedFormElement; // pack updated properties back into 1st level property
+    const updatedOrderForm = updateObject(
+      this.state.orderForm,
+      { [inputID]: updatedFormElement }
+    );
 
     let formIsValid = true;
     for (var id in updatedOrderForm) {
@@ -240,7 +204,8 @@ const mapStateToProps = state => ({
   ings: state.burgerBuilder.ingredients,
   price: state.burgerBuilder.totalPrice,
   loading: state.order.loading,
-  token: state.auth.token
+  token: state.auth.token,
+  userId: state.auth.userId
 });
 
 const mapDispatchToProps = dispatch => {

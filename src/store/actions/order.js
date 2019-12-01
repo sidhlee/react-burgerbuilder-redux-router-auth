@@ -31,7 +31,6 @@ export const purchaseBurger = (orderData, token) => {
     axios
       .post("/orders.json?auth=" + token, orderData)
       .then(res => {
-        console.log(res.data);
         dispatch(
           purchaseBurgerSuccess(res.data.name, orderData)
         );
@@ -60,15 +59,30 @@ export const fetchOrdersStart = () => ({
   type: actionTypes.FETCH_ORDERS_START
 });
 
-export const fetchOrders = token => {
+/* 
+By default, REST requests are executed with no authentication 
+and will only succeed if the Realtime Database Rules 
+allow public read or write access to the data. 
+To authenticate your request, use the 
+access_token= or auth= query parameters.
+
+Learn more about authentication through the REST API 
+in https://firebase.google.com/docs/database/rest/auth */
+export const fetchOrders = (token, userId) => {
   return dispatch => {
     dispatch(fetchOrdersStart());
+    // https://firebase.google.com/docs/database/rest/retrieve-data#section-rest-ordered-data
+    const queryParams = `?auth=${token}&orderBy="userId"&equalTo="${userId}"`;
     axios
-      .get("/orders.json?auth=" + token)
+      .get("/orders.json" + queryParams) // https://firebase.google.com/docs/database/rest/auth
       .then(res => {
-        console.log("res.data: ", res.data);
         // data transformation in thunkedActionCreator
         // (so that reducer just takes data it needs)
+        // { id: {ingredients, orderData, price }, ...}
+        // =>
+        // [{ingredients, orderData, price, id}, ...]
+        // (we're going to map array members into Order Components)
+        // ** Maping, Filtering or Reducing list of things -> ARRAY!! **
         const fetchedOrders = [];
         for (var key in res.data) {
           fetchedOrders.push({

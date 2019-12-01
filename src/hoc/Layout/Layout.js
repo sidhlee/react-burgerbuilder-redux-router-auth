@@ -11,13 +11,6 @@ class Layout extends Component {
     showSideDrawer: false
   };
 
-  componentDidMount() {
-    console.log("[Layout] componentDidMount");
-  }
-
-  componentDidUpdate() {
-    console.log("[Layout] componentDidUpdate");
-  }
   sideDrawerClosedHandler = () => {
     this.setState({ showSideDrawer: false });
   };

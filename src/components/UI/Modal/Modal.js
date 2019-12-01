@@ -4,10 +4,6 @@ import Aux from "../../../hoc/Aux/Aux";
 import Backdrop from "../Backdrop/Backdrop";
 
 class Modal extends Component {
-  componentDidMount() {
-    console.log("[Modal.js] componentDidMount");
-  }
-
   shouldComponentUpdate(nextProps, nextState) {
     return (
       nextProps.show !== this.props.show ||
@@ -15,13 +11,6 @@ class Modal extends Component {
     );
   }
 
-  UNSAFE_componentWillUpdate() {
-    console.log("[Modal.js] will update.");
-  }
-
-  componentDidUpdate() {
-    console.log("[Modal.js] componentDidUpdate");
-  }
   // below will not re-run if shoudldComponentUpdate returnds false.
   render() {
     return (
