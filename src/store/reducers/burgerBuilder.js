@@ -49,7 +49,7 @@ const removeIngredient = (state, action) => {
   const newState = {
     ingredients: updatedIngredients,
     totalPrice:
-      state.totalPrice +
+      state.totalPrice -
       INGREDIENT_PRICES[action.ingredientName],
     building: true
   };

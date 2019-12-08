@@ -11,14 +11,14 @@ export const removeIngredient = ingName => ({
   ingredientName: ingName
 });
 
-const setIngredients = ingredients => {
+export const setIngredients = ingredients => {
   return {
     type: actionTypes.SET_INGREDIENTS,
     ingredients
   };
 };
 
-const fetchIngredientsFailed = () => {
+export const fetchIngredientsFailed = () => {
   return {
     type: actionTypes.FETCH_INGREDIENTS_FAILED
   };
@@ -26,7 +26,7 @@ const fetchIngredientsFailed = () => {
 
 export const initIngredients = () => {
   return dispatch => {
-    axios
+    return axios
       .get(
         "https://react-my-burger-41a2a.firebaseio.com/ingredients.json"
       ) // make sure to include .json at the end!! (or you'll get a cors error)

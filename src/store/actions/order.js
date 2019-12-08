@@ -28,7 +28,7 @@ export const purchaseBurgerStart = () => {
 export const purchaseBurger = (orderData, token) => {
   return dispatch => {
     dispatch(purchaseBurgerStart());
-    axios
+    return axios
       .post("/orders.json?auth=" + token, orderData)
       .then(res => {
         dispatch(
@@ -73,7 +73,7 @@ export const fetchOrders = (token, userId) => {
     dispatch(fetchOrdersStart());
     // https://firebase.google.com/docs/database/rest/retrieve-data#section-rest-ordered-data
     const queryParams = `?auth=${token}&orderBy="userId"&equalTo="${userId}"`;
-    axios
+    return axios
       .get("/orders.json" + queryParams) // https://firebase.google.com/docs/database/rest/auth
       .then(res => {
         // data transformation in thunkedActionCreator
